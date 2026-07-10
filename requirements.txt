@@ -4,3 +4,4 @@ joblib
 nltk
 flask
 Werkzeug<3
+gunicorn
