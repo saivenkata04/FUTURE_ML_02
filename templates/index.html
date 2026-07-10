@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TriageAI - Support Ticket Classification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="nav">
+        <div class="brand"><span class="brand-dot"></span>TriageAI</div>
+        <a href="#predict">Launch App</a>
+    </nav>
+
+    <section class="hero">
+        <div class="eyebrow"><span class="pulse"></span> Live model - TF-IDF + trained classifier</div>
+        <h1>Every ticket, <span class="grad">triaged</span><br>the moment it lands.</h1>
+        <p class="sub">
+            TriageAI reads raw support tickets, classifies their category, and predicts urgency using your trained machine learning models.
+        </p>
+    </section>
+
+    <main class="app-shell" id="predict">
+        <div class="grid">
+            <form method="post" action="/" class="panel">
+                <div class="panel-title">// ticket_input.txt</div>
+                <textarea
+                    id="ticket"
+                    name="ticket"
+                    placeholder="Example: My payment was deducted twice but my order was not confirmed."
+                >{{ ticket }}</textarea>
+                <button type="submit">Run Prediction</button>
+                <div class="hint">Uses the saved TF-IDF vectorizer, category model, and priority model.</div>
+            </form>
+
+            <section class="results">
+                {% if error %}
+                    <div class="result-card">
+                        <div class="label">Input Required</div>
+                        <p class="alert">{{ error }}</p>
+                    </div>
+                {% elif category and priority %}
+                    <div class="status"><span class="pulse"></span> Prediction complete</div>
+                    <div class="result-card">
+                        <div class="label">Priority</div>
+                        <span class="value priority-{{ priority|lower }}">{{ priority }}</span>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Ticket Category</div>
+                        <span class="value">{{ category }}</span>
+                    </div>
+                    <div class="result-card">
+                        <div class="label">Recommendation</div>
+                        <p class="rec-text">{{ recommendation }}</p>
+                    </div>
+                {% else %}
+                    <div class="result-card">
+                        <div class="label">Waiting For Ticket</div>
+                        <p class="empty-state">Paste a support ticket and run prediction to see category, priority, and recommendation.</p>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+    </main>
+
+    <section class="stats">
+        <div class="stat"><div class="n">01</div><div class="t">Ticket Classification</div></div>
+        <div class="stat"><div class="n">02</div><div class="t">Priority Prediction</div></div>
+        <div class="stat"><div class="n">03</div><div class="t">NLP Preprocessing</div></div>
+        <div class="stat"><div class="n">04</div><div class="t">TF-IDF Features</div></div>
+    </section>
+
+    <footer>TriageAI - Machine Learning Task 2 - Flask + trained classifier</footer>
+</body>
+</html>
